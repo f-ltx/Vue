@@ -13,62 +13,38 @@
 </head>
 <body>
 <div id="app">
-    <p v-for="item in list" :key="item.id">
-        <input
-                type="checkbox"
-                :value="item.id"
-                :checked="check(item)"
-                :disabled="disable(item)"/>{{ item.name }}
-    </p>
-    <p v-for="item in list" :key="item.id">
-        <input
-                type="radio"
-                :value="item.id" id="item" name="item" :checked="check(item)"/>{{ item.name }}
-    </p>
-    <hr>
-    <el-form>
-        <el-form-item prop="discountValue">
-            <el-checkbox-group v-model="checkList" @change="bindCheckBox">
-                <el-checkbox label="1">1</el-checkbox>
-                <el-checkbox label="2">2</el-checkbox>
-                <el-checkbox label="3">3</el-checkbox>
-                <el-checkbox label="4">4</el-checkbox>
-            </el-checkbox-group>
-        </el-form-item>
-    </el-form>
-
+    <son @func="show"></son>
 </div>
+<template id="son">
+    <p @click="sonclick">子组件</p>
+</template>
 </body>
 <script type="application/javascript">
+    var son = {
+        template: "#son",
+        data() {
+            return {
+                sonmsg: {name: '小头儿子', age: 6}
+            }
+        },
+        methods: {
+            sonclick() {
+                this.$emit("func", this.sonmsg);
+            }
+        }
+    };
     var vm = new Vue({
         el: "#app",
         data: {
-            list: [
-                {id: 1, name: '李斯'},
-                {id: 2, name: '嬴政'},
-                {id: 3, name: '赵高'},
-                {id: 4, name: '韩非'},
-                {id: 5, name: '荀子'}
-            ],
-            checkList: ["1"],
-            oldCheckList: ["1","1"]
+            msg: "父组件中的msg"
         },
-        methods: {
-            check: function (item) {
-                return item.id == 4;
-            },
-            disable: function (item) {
-                return item.id != 4;
-            },
-            bindCheckBox(value) {
-                if (value.length == 0) {
-                    value.push(this.oldCheckList[1]);
-                    value.push(this.oldCheckList[1]);
-                }
-                this.checkList = [];
-                this.checkList.push(value[1]);
-                this.oldCheckList = value;
-            },
+        methods:{
+            show(data){
+                console.log(data);
+            }
+        },
+        components:{
+            son:son
         }
     });
 </script>
