@@ -13,38 +13,36 @@
 </head>
 <body>
 <div id="app">
-    <son @func="show"></son>
+    <input value="getElement" type="button" @click="getElement">
+    <span id="hello" ref="hello">hello vue...</span>
+    <login ref="login"></login>
 </div>
-<template id="son">
-    <p @click="sonclick">子组件</p>
-</template>
 </body>
 <script type="application/javascript">
-    var son = {
-        template: "#son",
+    var login = {
+        template: "<p>login components</p>",
         data() {
             return {
-                sonmsg: {name: '小头儿子', age: 6}
+                msg: "login.msg"
             }
         },
         methods: {
-            sonclick() {
-                this.$emit("func", this.sonmsg);
+            show() {
+                console.log("show");
             }
         }
     };
     var vm = new Vue({
         el: "#app",
-        data: {
-            msg: "父组件中的msg"
-        },
-        methods:{
-            show(data){
-                console.log(data);
+        methods: {
+            getElement() {
+                console.log(this.$refs.hello.innerHTML);
+                console.log(this.$refs.login.msg);
+                this.$refs.login.show();
             }
         },
-        components:{
-            son:son
+        components: {
+            login: login
         }
     });
 </script>
